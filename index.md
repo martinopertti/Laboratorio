@@ -1,5 +1,5 @@
 
-## Material del laboratorio
+## Material del laboratorio del curso de Medición y diseño de investigación, FCS-UdelaR
 
 ### Módulo 1 - Introducción y fundamentos de la programación en R
 - [Presentación](/clase_1.html)
