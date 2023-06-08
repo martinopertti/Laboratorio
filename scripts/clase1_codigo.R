@@ -11,24 +11,24 @@
 
 ##  1. Comandos básicos   ====================================================
 
-# Creamos un objeto llamado "year" con este año en forma numérica
-year <- 2023
+# Creamos un objeto llamado "anio" con este año en forma numérica
+anio <- 2023
 
 # Lo podemos imprimir simplemente escribiendo su nombre.
-year
+anio
 
 # Otra forma:
-(year <- 2023)
+(anio <- 2023)
 
 # También se puede imprimir de esta forma:
-print(year)
+print(anio)
 
 # Podemos chequear si el objeto se creó correctamente mediante la lista del 
 # environment
 ls()
 
 # Ahora, que podemos hacer con este objeto? Lo podemos usar en operaciones 
-year - 1996
+anio - 1996
 
 
 
@@ -37,41 +37,40 @@ year - 1996
 ## * 2.1. Crear objetos ----
 
 # Usando la misma lógica, podemos almacenar el resultado
-edad <- year - 1996
+edad <- anio - 1996
 print(edad)
 
 # Ahora podemos sumar estos objetos
-year + edad
+anio + edad
 
 # Para obtener ayuda sobre una función usamos:
 help(ls)
 
 # Para eliminar el objeto del ambiente:
-rm(year)
+rm(anio)
 
 # Para eliminar todos los objetos del ambiente:
 rm(list=ls())
-print(mi_primer_objeto) # No encuentra el objeto porque lo borró
 
 
 ## * 2.2. Tipos de objetos ----
 
 # Podemos volver a crear el objeto anterior, ahora de forma directa:
-year <- 2023
+anio <- 2023
 
 # Creamos algunos objetos distintos
 nombre <- "Dos mil veintidos"
 
 # Uso la función typeof() para averiguar el tipo
-typeof(year) 
+typeof(anio) 
 typeof(nombre)
 
 # Uso la función class() para averiguar la clase
-class(year) # es un vector de tipo numérico
+class(anio) # es un vector de tipo numérico
 class(nombre) # es un vector de tipo character
 
-year_2 <- "2022"
-class(year_2)
+anio_2 <- "2022"
+class(anio_2)
 
 vof <- TRUE
 class(vof) 
@@ -188,7 +187,7 @@ identical(media_fun, media_fun_x) # El mismo resultado
 help(identical)
 
 # Dataframe con el resultado de Uruguay en los últimos 5 mundiales
-uru_mundial <- data.frame(year = c(2002, 2006, 2010, 2014, 2018),
+uru_mundial <- data.frame(anio = c(2002, 2006, 2010, 2014, 2018),
                           posicion = c(26, NA, 4, 12, 5))
 
 # Veamos la posición promedio:

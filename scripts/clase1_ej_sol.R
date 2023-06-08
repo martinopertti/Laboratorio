@@ -68,25 +68,3 @@ media_desempleo <- mean(paises_eco$desempleo, na.rm = TRUE)
 media_desempleo <- round(media_desempleo, digits = 1)
 print(media_desempleo)
 
-## 12. Usando el dataframe "paises_eco" prueba que:
-
-# A. Argentina y Chile están en el mismo continente y Uruguay y Gibraltar en distintos
-paises_eco[1, 2] == paises_eco[2, 2]
-paises_eco[4, 2] == paises_eco[5, 2]
-
-# B. Que el desempleo en Brasil es mayor que en Argentina
-paises_eco[2, 3] > paises_eco[1, 3]
-
-# C. Que al menos uno de los países tiene una tasa de desempleo de 8.8
-8.8 %in% paises_eco$desempleo
-
-
-
-
-
-
-
-
-
-
-
