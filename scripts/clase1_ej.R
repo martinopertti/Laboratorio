@@ -44,10 +44,3 @@ paises_eco
 # (si hay datos faltantes excluir al país)
 
 ## 11. Redondea ese resultado a un dígito después de la coma
-
-## 12. Usando el dataframe "paises_eco" prueba que:
-# A. Argentina y Chile están en el mismo continente y Uruguay y Gibraltar en distintos
-# B. Que el desempleo en Brasil es mayor que en Argentina
-# C. Que al menos uno de los países tiene una tasa de desempleo de 8.8
-
-
