@@ -17,3 +17,9 @@
 - [Solución de ejercicios](/scripts/clase2_ej_sol.R)
 - Documentos adicionales:
 	- [Funciones-y-código](/documentos-markdown/Funciones-y-código.html)
+
+### Módulo 3 - Análisis de datos
+
+### Base de datos LAPOP para el trabajo final
+- [Libro de códigos](/documentos-markdown/LAPOP-2019.html)
+- [Base de datos](/data_lapop/lapop_uruguay_2019.dta)
