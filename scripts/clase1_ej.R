@@ -3,7 +3,7 @@
 ##  Clase 1: Introducción y fundamentos de la programación en R   
 ##  Ejercicios                                                     
 ##  Medición y diseño de investigación
-##  Martín Opertti - 2023                                        
+##  Martín Opertti y Fabricio Carneiro - 2023                                         
 ## ***************************************************************************
 
 

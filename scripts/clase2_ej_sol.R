@@ -3,7 +3,7 @@
 ##  Día 2: Manipulación de datos          
 ##  Solución de ejercicio                                          
 ##  Medición y diseño de investigación
-##  Martín Opertti - 2023                                         
+##  Martín Opertti y Fabricio Carneiro - 2023                                         
 ## ***************************************************************************
 
 ## Trabajaremos con un dataframe con datos de económicos y políticos de Uruguay. 

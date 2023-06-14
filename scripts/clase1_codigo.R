@@ -3,7 +3,7 @@
 ##  Clase 1: Introducción y fundamentos de la programación en R   
 ##  Código de la presentación                                      
 ##  Medición y diseño de investigación
-##  Martín Opertti - 2023                                         
+##  Martín Opertti y Fabricio Carneiro - 2023                                         
 ## ***************************************************************************
 
 ## En este script vamos a repasar algunas funciones y operadores básicos de R
@@ -78,17 +78,17 @@ class(vof)
 ## Por qué importa el tipo de objeto?
 # Character
 obj_1 <- "10"
-class(obj_1)
+typeof(obj_1)
 obj_1 + 20 # Da error
 
 # Numeric
 obj_2 <- 10
-class(obj_2)
+typeof(obj_2)
 obj_2 + 20 # Funciona
 
 # Numeric to character
 obj_1 <- as.numeric(obj_1)
-class(obj_1)
+typeof(obj_1)
 is.numeric(obj_1) # Podemos verificarlo directamente también
 obj_1 + 20 # Funciona
 

@@ -3,7 +3,7 @@
 ##  Día 2: Manipulación de datos          
 ##  Código de la presentación                                      
 ##  Medición y diseño de investigación
-##  Martín Opertti - 2023                                       
+##  Martín Opertti y Fabricio Carneiro - 2023                                         
 ## ***************************************************************************
 
 

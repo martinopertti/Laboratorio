@@ -80,6 +80,16 @@ knitr::include_graphics("ima/rstudio.png")
 
 ---
 
+## Preguntas
+
+- ¿Por qué analizar datos?
+
+- ¿Por qué hacerlo mediante programación?
+
+- ¿Por qué programar en R?
+
+---
+
 ## Recursos complementarios
 
 La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos recursos para aprender de forma independiente y resolver problemas cuando nos estancamos:
@@ -87,7 +97,7 @@ La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos
 - Libro "R for Data Science". Es muy completo y referencia en la mayoría de los cursos de R, pueden acceder a la versión online [original](https://r4ds.had.co.nz/) y a una [traducción](https://r4ds-en-espaniol.netlify.app/)
 - [R Bloggers](https://www.r-bloggers.com/) y [rpubs](https://rpubs.com/) publican miles de tutoriales para temas específicos 
 - Existen foros -por ej. [Stack Overflow](https://stackoverflow.com/)- donde responden una infinidad preguntas de programación en R. 
-- [IntRo](https://github.com/Nicolas-Schmidt/IntRo) es un excelente curso de R (con gran contenido teórico) de FCS-UdelaR a cargo de Nicolás Schmidt 
+- [IntRo](https://github.com/Nicolas-Schmidt/IntRo) es un excelente curso de R a cargo de Nicolás Schmidt  de Facultad de Ciencias Sociales
 - [AnalizaR](https://arcruz0.github.io/libroadp/index.html) es un libro sobre análisis de datos en R con énfasis en Ciencia Política 
 
 
@@ -132,6 +142,27 @@ knitr::include_graphics("ima/consola_standard.png")
 
 ---
 
+## Anotaciones
+
+- Es importante ser prolijo y cuidadoso con el código que escribimos
+- Los scripts nos dan la posibilidad de incluir comentarios, lo que es muy útil:
+
+```{r ej3, echo = TRUE}
+## Esta línea es una anotación. 
+
+## R ignora todo lo que está acá adentro (tiene que empezar con #)
+
+## Podemos escribir nombres de funciones u objetos y R no las va a
+# interpetar
+
+## Usar anotaciones es clave para poder entender qué fue lo que
+# hicimos anteriormente
+```
+
+- De esta forma, podemos comentar que fue lo que hicimos para acordarnos nosotros, y que los demás entiendan
+
+---
+
 ## Ayuda  
 
 - Obtener la ayuda correcta es fundamental al programar en R. Podemos obtener ayuda de todas las funciones que utilizamos con el comando `help()` (ej. `help(mean)`) o `?` (ej. `?mean`)
@@ -161,27 +192,6 @@ knitr::include_graphics("ima/ima_mean.jpeg")
 class: inverse, center, middle
 
 # Lenguaje básico de R
-
----
-
-## Anotaciones
-
-- Es importante ser prolijo y cuidadoso con el código que escribimos
-- Los scripts nos dan la posibilidad de incluir comentarios, lo que es muy útil:
-
-```{r ej3, echo = TRUE}
-## Esta línea es una anotación. 
-
-## R ignora todo lo que está acá adentro (tiene que empezar con #)
-
-## Podemos escribir nombres de funciones u objetos y R no las va a
-# interpetar
-
-## Usar anotaciones es clave para poder entender qué fue lo que
-# hicimos anteriormente
-```
-
-- De esta forma, podemos comentar que fue lo que hicimos para acordarnos nosotros, y que los demás entiendan
 
 ---
 
@@ -276,7 +286,7 @@ El tipo de un objeto refiere a cuál es el tipo de los datos dentro del objeto. 
 ```{r t1, echo = FALSE, results="hide"}
 Nombre <- c("integer", "double", "character", "logical")
 Tipos <- c("Númerico: valores enteros", "Númerico: valores reales", "Texto", "Lógico (TRUE or FALSE)")
-Ejemplo <- c(10, 10.5, "Diez", TRUE)
+Ejemplo <- c(10, 10.5, '"Diez"', TRUE)
 tabla1 <- data.frame(cbind(Nombre, Tipos, Ejemplo))
 ```
  
@@ -340,7 +350,7 @@ Supongamos que creamos un objeto con el valor 10, al que luego le sumaremos otro
 ```{r ej7b2, echo = TRUE, error=TRUE}
 obj_1 <- "10"
 
-class(obj_1)
+typeof(obj_1)
 obj_1 + 20 # Da error
 ```
 
@@ -352,7 +362,7 @@ En cambio, si creamos el objeto de tipo númerico:
 ```{r ej7b3, echo = TRUE}
 obj_1 <- 10
 
-class(obj_1)
+typeof(obj_1)
 obj_1 + 20 # Funciona
 ```
 
@@ -363,10 +373,10 @@ Normalmente no trabajamos con objetos de un solo valor, y reescribirlos no es un
 ```{r ej7b32, echo = TRUE, error=TRUE}
 obj_1 <- "10"
 
-class(obj_1)
+typeof(obj_1)
 
 obj_1 <- as.numeric(obj_1)
-class(obj_1)
+typeof(obj_1)
 is.numeric(obj_1) # Podemos verificarlo directamente también
 ```
 
@@ -678,10 +688,7 @@ library(readxl)
 library(tidyverse)
 library(data.table)
 datauru <- read_excel("data/datauru.xlsx")
-data <- select(datauru, year, gdp_lcu, inflation, unemployment, presidente) %>% 
-  rename(inflacion = inflation,
-         desempleo = unemployment,
-         pbi = gdp_lcu)
+data <- select(datauru, anio, pbi, inflacion, desempleo, presidente) 
 ```
 
 ```{r ej2b, echo = TRUE}
