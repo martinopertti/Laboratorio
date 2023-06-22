@@ -4,7 +4,7 @@
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
     <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
-    <meta name="date" content="2023-06-14" />
+    <meta name="date" content="2023-06-21" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -42,7 +42,7 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
 ]
 .date[
-### June 14, 2023
+### June 21, 2023
 ]
 
 ---
@@ -154,6 +154,21 @@ La comunidad de usuarios de R es inmensa y muy abierta. Por esto hay muchísimos
 - [IntRo](https://github.com/Nicolas-Schmidt/IntRo) es un excelente curso de R a cargo de Nicolás Schmidt  de Facultad de Ciencias Sociales
 - [AnalizaR](https://arcruz0.github.io/libroadp/index.html) es un libro sobre análisis de datos en R con énfasis en Ciencia Política 
 
+---
+## Estructura del laboratorio
+
+- Módulo 1: Introducción y fundamentos de la programación en R
+
+- Módulo 2: Manipulación de datos 
+
+- Módulo 3: Análisis de datos 
+
+- Cada módulo cuenta con:
+
+  - Presentación
+  - Código de la clase
+  - Ejercicio
+  - Solución del ejercicio
 
 ---
 class: inverse, center, middle
@@ -619,6 +634,18 @@ v3
 ```
 
 ---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Crear un vector con la edad de los integrantes de tu hogar*
+
+*(2) Realizar una operación sobre ese vector para calcular la edad de cada integrante en 2030*
+
+]
+
+
+---
 class: inverse, center, middle
 
 # Dataframes 
@@ -761,61 +788,33 @@ mean(encuesta$edad) # Podemos aplicarle funciones (la media en este caso)
 ## Ejercicio
 
 .content-box-blue[
-*(1) Crear un vector con la edad de los integrantes de tu hogar*
+*(1) En una planilla excel o en una hoja de cálculo de google drive crear una tabla de datos con el nombre, población y PBI de 4 países a elección de ustedes*
 
-*(2) Realizar una operación sobre ese vector para calcular la edad de cada integrante en 2030*
-
-*(3) Crear un tercer vector con el nombre de cada uno y combinar los 3 vectores en un dataframe*
 ]
 
 ---
 
 ## Ejercicio
 
-.codefontchico[
+.content-box-blue[
+*(1) En una planilla excel o en una hoja de cálculo de google drive crear una tabla de datos con el nombre, población y PBI de 4 países a elección de ustedes*
 
-```r
-# (1) Vector con la edad de los integrantes de tu hogar
-edades &lt;- c(26, 27)
-edades
-```
+*(2) Crear esa misma tabla de datos en R usando la función data.frame()*
 
-```
-## [1] 26 27
-```
-
-```r
-# (2) Calcular la edad para 2030
-edades_2030 &lt;- edades + 7
-edades_2030
-```
-
-```
-## [1] 33 34
-```
-
-```r
-# (3) Tercer vector con el nombre de cada uno y crear dataframe
-nombres &lt;- c("Martín", "Leticia")
-nombres
-```
-
-```
-## [1] "Martín"  "Leticia"
-```
-
-```r
-data.frame(edad_actual = edades,
-           edades_2030 = edades_2030,
-           nombres = nombres)
-```
-
-```
-##   edad_actual edades_2030 nombres
-## 1          26          33  Martín
-## 2          27          34 Leticia
-```
 ]
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) En una planilla excel o en una hoja de cálculo de google drive crear una tabla de datos con el nombre, población y PBI de 3 países a elección de ustedes*
+
+*(2) Crear esa misma tabla de datos en R usando la función data.frame()*
+
+*(3) Crear un vector llamado "paises" con los nombres de los países que eligieron*
+]
+
 
 ---
 class: inverse, center, middle
@@ -826,7 +825,7 @@ class: inverse, center, middle
 
 ## Funciones 
 
-- Una función es una serie de instrucciones para realizar una tarea específica. La función suele necesitar un imput (generalmente datos) y suele devolver un output (generalmente datos luego de cierta regla)
+- Una función es una serie de instrucciones para realizar una tarea específica. La función suele necesitar un imput o entrada (generalmente datos) y suele devolver un output o salida (generalmente datos luego de cierta regla)
 
 - Los objetos .bold[son] cosas, las funciones .bold[hacen] cosas
 
@@ -917,7 +916,7 @@ identical(media_fun, media_fun_x) # El mismo resultado
 ## Funciones: argumentos 
 - Muchas funciones necesitan más de un argumento para funcionar de forma correcta. 
 
-- Por ejemplo, pensemos en la función `identical()`: "The safe and reliable way to test two objects for being exactly equal. It returns `TRUE` in this case, `FALSE` in every other case.".
+- Por ejemplo, pensemos en la función `identical()`: "La forma segura y confiable de probar dos objetos para que sean exactamente iguales. Devuelve `TRUE` en este caso, `FALSE` en cualquier otro caso".
 
 - Por definición, `identical()` necesita dos conjuntos de datos distintos, para testear si son iguales.
 
@@ -948,14 +947,14 @@ identical(x = media_fun, y = media_fun_x) # por especificación
 
 - A su vez, las funciones muchas veces cuentan con otros argumentos aparte de los datos que usan de insumo. Son detalles de cómo queremos aplicar la regla o el output que recibimos. 
 
-- Volvamos a la función `mean()`. Voy a crear un dataframe con la posición que obtuvo Uruguay en los últimos 5 mundiales de futbol masculino
+- Volvamos a la función `mean()`. Voy a crear un dataframe con la posición que obtuvo Uruguay en los últimos 6 mundiales de futbol masculino
 
 .codefont[
 
 ```r
-# Dataframe con el resultado de Uruguuay en los últimos 5 mundiales
-uru_mundial &lt;- data.frame(year = c(2002, 2006, 2010, 2014, 2018),
-                          posicion = c(26, NA, 4, 12, 5))
+# Dataframe con el resultado de Uruguuay en los últimos 6 mundiales
+uru_mundial &lt;- data.frame(year = c(2002, 2006, 2010, 2014, 2018, 2022),
+                          posicion = c(26, NA, 4, 12, 5, 20))
 # Veamos la posición promedio:
 mean(uru_mundial$posicion) 
 ```
@@ -972,7 +971,7 @@ mean(uru_mundial$posicion, na.rm = TRUE)
 ```
 
 ```
-## [1] 11.75
+## [1] 13.4
 ```
 ]
 ---
@@ -1140,6 +1139,55 @@ data %&gt;%
 ##   &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 Sanguinetti 344923753631.     46.2 
 ## 2 Vázquez     584455715198.      7.42
+```
+
+---
+
+## Paquetes 
+
+- Los paquetes son conjuntos de funciones, documentación de ayuda y a veces datos
+--
+
+- El conjunto de funciones que vienen por defecto en R se le denomina "Base". Por ej. las funciones que hemos utilizado hasta ahora  -`mean()`, `identical()`, `help()`- están dentro del R Base.
+--
+
+- El repositorio principal donde se alojan los paquetes de R se llama Comprehensive R Archive Network [CRAN](https://cran.r-project.org/). Hay más de 10.000 paquetes alojados en CRAN. Aquí hay dos listas con algunos de los paquetes más 
+útiles: [support.rstudio](https://support.rstudio.com/hc/en-us/articles/201057987-Quick-list-of-useful-R-packages) y [towardsdatascience](https://towardsdatascience.com/a-comprehensive-list-of-handy-r-packages-e85dad294b3d)  
+--
+
+- Los paquetes alojados en CRAN son testados antes de ser publicados. Por eso es recomendable tener cuidado con utilizar paquetes que no han sido publicados allí aún.
+--
+
+- Los paquetes normalmente están relacionados a alguna temática, por ejemplo existen paquetes específicos para manipulación de datos [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf), visualización de datos [ggplot2](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf) o importar y exportar datos [readr](https://cran.r-project.org/web/packages/readr/readr.pdf). Dado que R es libre, cualquier persona puede crear y publicar un paquete (publicarlo en CRAN requiere ciertos procesos igualmente), esto facilita que haya paquetes muy específicos para ciertas tareas que pueden ser de gran utilidad. Por ejemplo, existen paquetes para  conectarse con la API de Twitter [rtweet](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf), para utilizar los datos de [Gapminder](https://cran.csiro.au/web/packages/gapminder/gapminder.pdf) o para analizar datos electorales y de opinión pública en Uruguay [opuy](https://nicolas-schmidt.github.io/opuy/)
+
+---
+
+## Paquetes: instalación 
+- Cuando abrimos R solamente tenemos cargado por defecto el paquete Base. 
+
+- La primera vez que queremos utilizar un paquete tenemos que descargarlo con el siguiente comando:
+
+
+```r
+# Para descargar paquetes de CRAN, utilizamos la siguiente función:
+install.packages("nombre_del_paquete")
+install.packages("dplyr") # Ejemplo
+
+# Existen otros paquetes no alojados en CRAN, que se instalan con
+# el paquete "devtools" 
+```
+
+---
+
+## Paquetes: cargar 
+- Luego de instalarlo (una sola vez por versión de R), tenemos que cargar el paquete utilizando la función `library()`
+
+
+- Esto lo debemos realizar en cada sesión de R que vayamos a utilizar (cada vez que abrimos R). 
+
+```r
+library(nombre_del_paquete)
+library(dplyr) # Ejemplo
 ```
 
 ---

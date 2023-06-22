@@ -105,7 +105,6 @@ str(mi_primer_vector)
 
 # Más vectores:
 (v1 <- c(1:5)) # Todos los números de 1 a 5
-
 (v2 <- seq(0, 50, 10)) # De 0 a 50 de a 10 números
 
 (v3 <- c(v1, v2)) # Combino vectores creando un nuevo vector
