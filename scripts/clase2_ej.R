@@ -52,5 +52,4 @@
 ## 15. A partir del dataframe creado en el punto anterior, Crear una tabla
 # resumen con la media y desvío de inflación y aprobación por presidente
 
-## 16. Pasr la tabla resumen del punto anterior a formato largo
 

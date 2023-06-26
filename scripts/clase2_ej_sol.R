@@ -89,13 +89,6 @@ tabla_resumen <- datauru_2 %>%
 
 tabla_resumen
 
-## 16. Pasr la tabla resumen a formato largo
-tabla_resumen %>% 
-  pivot_longer(-presidente,
-               values_to = "valores",
-               names_to = "medida")
-
-
 
 
 

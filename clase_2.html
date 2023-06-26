@@ -4,7 +4,7 @@
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
     <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
-    <meta name="date" content="2023-06-09" />
+    <meta name="date" content="2023-06-26" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -38,7 +38,7 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
 ]
 .date[
-### June 09, 2023
+### June 26, 2023
 ]
 
 ---
@@ -52,7 +52,7 @@ class: inverse, center, middle
 ---
 
 ## Directorios de trabajo 
-- Para abrir en R un archivo guardado en tu computadora, debes especificar en qué carpeta está guardado, para esto hay varias opciones. Hay muchas opciones, una de ellas es fijar un directorio por defecto (es decir, especificarle a R la carpeta en la que vamos a trabajar):
+- Para abrir en R un archivo guardado en tu computadora, debes especificar en qué carpeta está guardado. Hay muchas opciones, una de ellas es fijar un directorio por defecto (es decir, especificarle a R la carpeta en la que vamos a trabajar):
 
 .codefont[
 
@@ -75,18 +75,17 @@ getwd() # Con está función puedo consultar el directorio
 
 library(readxl)
 desempleo_uru &lt;- read_excel("data/desempleo.xlsx")
-```
-
-```
-## Error: `path` does not exist: 'data/desempleo.xlsx'
-```
-
-```r
 head(desempleo_uru, 4)
 ```
 
 ```
-## Error in head(desempleo_uru, 4): object 'desempleo_uru' not found
+## # A tibble: 4 × 2
+##    Year  tasa
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1  1990   8.5
+## 2  1991   8.9
+## 3  1992   9  
+## 4  1993   8.3
 ```
 ]
 
@@ -118,11 +117,11 @@ Deberían ver en su carpeta algo así:
 
 Al comienzo de cada script **deben** especificar el directorio donde está su carpeta del curso, de lo contrario los códigos les van a devolver errores. 
 
-En este caso, por ejemplo, creé la carpeta "laboratorio" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
+En este caso, por ejemplo, creé la carpeta "cacrpeta_del_curso" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
 
 
 ```r
-setwd("C:/Usuario/Martin/Dropbox/cursos/Medicion y diseño/laboratorio") 
+setwd("C:/Usuario/Martin/Dropbox/cursos/Medicion y diseño/cacrpeta_del_curso") 
 ```
 
 De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.xlsx" que está guardada en la carpeta data dentro de la carpeta laboratorio, simplemente tenemos que especificar la siguiente dirección (porque R ya lo va a buscar dentro de la carpeta laboratorio)
@@ -147,9 +146,9 @@ class: inverse, center, middle
 
 - Existen varios paquetes que permiten importar y exportar datos desde distintos formatos. Algunos de los más utilizados son [readr](https://readr.tidyverse.org/), [haven](https://haven.tidyverse.org/), [readxl](https://readxl.tidyverse.org/) y [utils](https://www.rdocumentation.org/packages/utils/versions/3.6.2)
 
-- El primer paso es siempre identificar la extensión del archivo que queremos importar. Por ejemplo, las planillas excel (dependiendo de la versión) suelen tener extension .xlsx
+- El primer paso es siempre identificar la extensión del archivo que queremos importar. Por ejemplo, las planillas excel (dependiendo de la versión) suelen tener extension .xlsx. Pueden consultar la extensión de un archivo con botón derecho + propiedades
 
-- Pueden consultar la extensión de un archivo con botón derecho + propiedades
+- Luego deben identificar en qué carpeta está guardada esa base de datos.
 
 ---
 
@@ -535,6 +534,7 @@ addmargins(prop.table(tabla_1)) # Proporciones y totales
 ```
 ]
 
+
 ---
 class: inverse, center, middle
 
@@ -630,6 +630,22 @@ plot(data_gapminder$lifeExp, data_gapminder$gdpPercap,
 &lt;img src="clase_2_files/figure-html/ej22_b-1.png" width="400px" /&gt;
 ]
 
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Importar el archivo excel en la carpeta data llamado "datauru"*
+
+*(2) Explorar las variables y el tipo de cada variable con la función glimpse()*
+
+*(3) Calcular la media de una variable numérica*
+
+*(4) Crear una tabla de proporciones con la distribución de la variable partido*
+
+*(5) Crear un gráfico de dispersión con las variables inflación (eje de las x) y aprobación (eje de las y)*
+]
 
 ---
 class: inverse, center, middle
@@ -1024,6 +1040,34 @@ identical(d_gap$mercosur, d_gap$mercosur2)
 ```
 ]
 
+
+---
+## Recodificación condicional con case_when y mutate
+
+Recodificación con valores numéricos. Supongamos que queremos crear una nueva variable pob_rec, que clasifica a los países en población grande (más de 20 millones), mediana (entre 5 y 20) o pequeña (menos de 5)
+
+.codefont[
+
+```r
+d_gap &lt;- d_gap %&gt;% 
+  mutate(pob_rec = case_when(
+    pop &gt;= 20000000 ~ "Grande",
+    pop &gt;= 5000000 &amp; pop &lt; 20000000 ~ "Mediana",
+    pop &lt; 5000000 ~ "Pequeña",
+    TRUE ~ "Error")
+  ) 
+
+table(d_gap$pob_rec)
+```
+
+```
+## 
+##  Grande Mediana Pequeña 
+##     419     580     705
+```
+]
+
+
 ---
 
 ## Recodificación condicional con case_when y mutate
@@ -1055,9 +1099,187 @@ class: inverse, center, middle
 # Resumenes y tablas
 
 ---
+## Resumir datos: tablas simples
+
+Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del tidyverse. Con un simple `mutate()` podemos transformar la frecuencia simple en proporción o porcentaje
+
+.codefontchico[
+
+```r
+# Frecuencia simple
+d_gap %&gt;% 
+  count(continent)
+```
+
+```
+## # A tibble: 5 × 2
+##   continent     n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 Africa      624
+## 2 Americas    300
+## 3 Asia        396
+## 4 Europe      360
+## 5 Oceania      24
+```
+
+```r
+# Frecuencia proporción
+d_gap %&gt;% 
+  count(continent) %&gt;% 
+  mutate(per = n/sum(n)*100) %&gt;% # Porcentaje
+  mutate(prop = n/sum(n)) # Proporción
+```
+
+```
+## # A tibble: 5 × 4
+##   continent     n   per   prop
+##   &lt;fct&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Africa      624 36.6  0.366 
+## 2 Americas    300 17.6  0.176 
+## 3 Asia        396 23.2  0.232 
+## 4 Europe      360 21.1  0.211 
+## 5 Oceania      24  1.41 0.0141
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando usamos `count()` con dos variables vemos que la salida está en formato largo. Eso nos puede servir para graficar si usamos ggplot2 y para otros paquetes, pero no es como generalmente queremos leer una tabla para interpretarla. 
+
+.codefontchico[
+
+```r
+# Tabla cruzada en formato largo
+d_gap %&gt;% 
+  count(continent, pob_rec)
+```
+
+```
+## # A tibble: 15 × 3
+##    continent pob_rec     n
+##    &lt;fct&gt;     &lt;chr&gt;   &lt;int&gt;
+##  1 Africa    Grande     86
+##  2 Africa    Mediana   208
+##  3 Africa    Pequeña   330
+##  4 Americas  Grande     72
+##  5 Americas  Mediana    98
+##  6 Americas  Pequeña   130
+##  7 Asia      Grande    168
+##  8 Asia      Mediana   111
+##  9 Asia      Pequeña   117
+## 10 Europe    Grande     92
+## 11 Europe    Mediana   152
+## 12 Europe    Pequeña   116
+## 13 Oceania   Grande      1
+## 14 Oceania   Mediana    11
+## 15 Oceania   Pequeña    12
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+ Para pasar a formato ancho podemos utilizar la función `spread()`. El primer argumento dentro de `spread()` es la variable que queremos que pase a ser columnas y el segundo argumento la variable que contiene los valores.
+
+.codefont[
+
+```r
+# Tabla cruzada en formato ancho
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+## # A tibble: 5 × 4
+##   continent Grande Mediana Pequeña
+##   &lt;fct&gt;      &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
+## 1 Africa        86     208     330
+## 2 Americas      72      98     130
+## 3 Asia         168     111     117
+## 4 Europe        92     152     116
+## 5 Oceania        1      11      12
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando analizamos tablas cruzadas, muchas veces queremos ver procentajes en lugar de frecuencias. Para ello podemos transformar la frecuencia en porcentaje.
+
+.codefont[
+
+```r
+# Porcentaje total
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;%
+  mutate(n = n/sum(n)*100) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+## # A tibble: 5 × 4
+##   continent Grande Mediana Pequeña
+##   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Africa    5.05    12.2    19.4  
+## 2 Americas  4.23     5.75    7.63 
+## 3 Asia      9.86     6.51    6.87 
+## 4 Europe    5.40     8.92    6.81 
+## 5 Oceania   0.0587   0.646   0.704
+```
+]
+
+---
+## Resumir datos: tablas cruzada
+
+Cuando trabajamos con procentajes en tablas cruzadas, tenemos que considerar el total del %. En el ejemplo anterior el porcentaje era sobre el total, muchas veces queremos calcularlo sobre cada fila o cada columna
+
+.codefontchico[
+
+```r
+# % de paises en cada tamaño de población por continente 
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;%
+  mutate(n = n/sum(n)*100, .by = continent) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+## # A tibble: 5 × 4
+##   continent Grande Mediana Pequeña
+##   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Africa     13.8     33.3    52.9
+## 2 Americas   24       32.7    43.3
+## 3 Asia       42.4     28.0    29.5
+## 4 Europe     25.6     42.2    32.2
+## 5 Oceania     4.17    45.8    50
+```
+
+```r
+# % de continente por tamaño de población  
+d_gap %&gt;% 
+  count(continent, pob_rec) %&gt;%
+  mutate(n = n/sum(n)*100, .by = pob_rec) %&gt;% 
+  spread(pob_rec, n)
+```
+
+```
+## # A tibble: 5 × 4
+##   continent Grande Mediana Pequeña
+##   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Africa    20.5     35.9    46.8 
+## 2 Americas  17.2     16.9    18.4 
+## 3 Asia      40.1     19.1    16.6 
+## 4 Europe    22.0     26.2    16.5 
+## 5 Oceania    0.239    1.90    1.70
+```
+]
+
+---
 ## Resumir datos 
 
-Resumir datos (tablas descriptivas) es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
+Resumir datos con estadísticos descriptivos es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
 
 Escencialmente `summarise()` resume un dataframe en una fila según una estadística especificada. Por ejemplo, calculando la media de una variable
 
@@ -1205,135 +1427,38 @@ resumen_2
 ```
 ]
 
----
-class: inverse, center, middle
 
-# Estructura de datos
+&lt;!-- --- --&gt;
 
----
-## Cambios de estructura
+&lt;!-- ## Ejercicio --&gt;
 
-Muchas veces los resultados de funciones no están en el formato que queremos. Para pasar datos a otras estructuras tenemos las funciones `pivot_longer()` (para pasar de formato ancho a largo) y `pivot_wider()` (para pasar de formarto largo a ancho) del paquete tidyr.
+&lt;!-- .content-box-blue[ --&gt;
+&lt;!-- *(1) Con la data de gapminder crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)* --&gt;
 
-.center[
-&lt;img src="ima/wide_long.png" width="600px" /&gt;
-]
+&lt;!-- *(2) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida* --&gt;
 
----
-## De ancho a largo con pivot_longer()
+&lt;!-- *(3) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):* --&gt;
+&lt;!-- ] --&gt;
 
-.center[
-&lt;img src="ima/wide_ima.png" width="1000px" /&gt;
-]
+&lt;!-- ```{r chsadasdas13, echo = FALSE} --&gt;
+&lt;!-- d_gap &lt;- d_gap %&gt;%  --&gt;
+&lt;!--   mutate(vida_rec = case_when( --&gt;
+&lt;!--     lifeExp &gt;= 75 ~ "Alta", --&gt;
+&lt;!--     lifeExp &gt;= 65 &amp; lifeExp &lt; 75 ~ "Media", --&gt;
+&lt;!--     lifeExp &lt; 65 ~ "Baja" --&gt;
+&lt;!--   )) --&gt;
+&lt;!-- ``` --&gt;
 
-.right[[Wichkham &amp; Grolemund (2018)](https://r4ds.had.co.nz/tidy-data.html)]
+&lt;!-- ```{r ch1sadsa3, echo = FALSE} --&gt;
+&lt;!-- d_gap %&gt;%  --&gt;
+&lt;!--   count(continent, vida_rec) %&gt;%  --&gt;
+&lt;!--   mutate(n = n/sum(n), .by = continent) %&gt;%  --&gt;
+&lt;!--   spread(vida_rec, n) --&gt;
+&lt;!-- ``` --&gt;
 
----
-## De ancho a largo con pivot_longer()
-
-.codefontchico[
-
-```r
-print(resumen_2)
-```
-
-```
-## # A tibble: 2 × 7
-##   continent  media desvio    suma    max   min paises
-##   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;
-## 1 Americas  11003.  9713. 275076. 42952. 1202.     25
-## 2 Europe    25054. 11800. 751634. 49357. 5937.     30
-```
-
-```r
-resumen_2_largo &lt;- resumen_2 %&gt;% 
-  pivot_longer(cols = -continent, # Columnas a unir 
-               names_to = "medida", # Nombre de variable "key" 
-               values_to = "valor") # Nombre de variable con valores
-
-print(resumen_2_largo)
-```
-
-```
-## # A tibble: 12 × 3
-##    continent medida   valor
-##    &lt;fct&gt;     &lt;chr&gt;    &lt;dbl&gt;
-##  1 Americas  media   11003.
-##  2 Americas  desvio   9713.
-##  3 Americas  suma   275076.
-##  4 Americas  max     42952.
-##  5 Americas  min      1202.
-##  6 Americas  paises     25 
-##  7 Europe    media   25054.
-##  8 Europe    desvio  11800.
-##  9 Europe    suma   751634.
-## 10 Europe    max     49357.
-## 11 Europe    min      5937.
-## 12 Europe    paises     30
-```
-]
-
----
-## De largo a ancho con pivot_wider()
-
-.center[
-&lt;img src="ima/long_ima.png" width="800px" /&gt;
-]
-
-.right[[Wichkham &amp; Grolemund (2018)](https://r4ds.had.co.nz/tidy-data.html)]
-
----
-## De largo a ancho con pivot_wider()
-
-.codefontchico[
-
-```r
-print(resumen_2_largo)
-```
-
-```
-## # A tibble: 12 × 3
-##    continent medida   valor
-##    &lt;fct&gt;     &lt;chr&gt;    &lt;dbl&gt;
-##  1 Americas  media   11003.
-##  2 Americas  desvio   9713.
-##  3 Americas  suma   275076.
-##  4 Americas  max     42952.
-##  5 Americas  min      1202.
-##  6 Americas  paises     25 
-##  7 Europe    media   25054.
-##  8 Europe    desvio  11800.
-##  9 Europe    suma   751634.
-## 10 Europe    max     49357.
-## 11 Europe    min      5937.
-## 12 Europe    paises     30
-```
-
-```r
-resumen_2_largo %&gt;% 
-  pivot_wider(names_from = continent, # Variable que pasa a distintas columnas
-              values_from = valor) # Variable donde se extraen los valores
-```
-
-```
-## # A tibble: 6 × 3
-##   medida Americas  Europe
-##   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 media    11003.  25054.
-## 2 desvio    9713.  11800.
-## 3 suma    275076. 751634.
-## 4 max      42952.  49357.
-## 5 min       1202.   5937.
-## 6 paises      25      30
-```
-]
-
-
-
-
-
-
-
+&lt;!-- .content-box-blue[ --&gt;
+&lt;!-- *(4) Crear una tabla con * --&gt;
+&lt;!-- ] --&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

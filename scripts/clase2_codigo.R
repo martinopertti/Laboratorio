@@ -165,15 +165,6 @@ hist(d_gap$lifeExp,
 plot(d_gap$lifeExp, d_gap$gdpPercap,
      main = "Relación entre expectativa de vida y PBI per cápita")
 
-quantile(d_gap$lifeExp, probs=c(0.2, 0.4, 0.6, 0.8)) # Cuantiles
-quantile(d_gap$lifeExp, probs=seq(0, 1, 0.2)) # Cuantiles
-
-# Con la función ntile() de dplyr podemos asignar quintiles en una variable
-d_gap$lifeExp_quintil <- ntile(d_gap$lifeExp, 5)
-
-# Tabla cruzada 
-table(d_gap$continent, d_gap$lifeExp_quant)
-
 
 
 ##  7. Filtrar observaciones   ==============================================
@@ -333,6 +324,20 @@ d_gap <- mutate(d_gap, mercosur_3 = case_when(
 identical(d_gap$mercosur, d_gap$mercosur_2)
 identical(d_gap$mercosur_2, d_gap$mercosur_3)
 
+# Recodificaciones numéricas
+# Supongamos que queremos crear una nueva variable pob_rec, que clasifica a 
+# los países en población grande (más de 20 millones), mediana (entre 5 y 20) 
+# o pequeña (menos de 5)
+d_gap <- d_gap %>% 
+  mutate(pob_rec = case_when(
+    pop >= 20000000 ~ "Grande",
+    pop >= 5000000 & pop < 20000000 ~ "Mediana",
+    pop < 5000000 ~ "Pequeña",
+    TRUE ~ "Error")
+  ) 
+
+table(d_gap$pob_rec)
+
 # También puedo crear variables en función a dos variables 
 d_gap <- mutate(d_gap, var1 = case_when(gdpPercap > 20000 ~ 1,
                                         lifeExp > 75 ~ 1,
@@ -342,6 +347,47 @@ table(d_gap$var1)
 
 
 ## 12. Resumir datos  ====================================================
+
+# Frecuencia simple
+d_gap %>% 
+  count(continent)
+
+# Frecuencia proporción
+d_gap %>% 
+  count(continent) %>% 
+  mutate(per = n/sum(n))
+
+# Frecuencia proporción
+d_gap %>% 
+  count(continent) %>% 
+  mutate(per = n/sum(n)*100)
+
+# Tabla cruzada en formato largo
+d_gap %>% 
+  count(continent, pob_rec)
+
+# Tabla cruzada en formato ancho
+d_gap %>% 
+  count(continent, pob_rec) %>% 
+  spread(pob_rec, n)
+
+# Porcentaje total
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100) %>% 
+  spread(pob_rec, n)
+
+# % de paises en cada tamaño de población por continente 
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = continent) %>% 
+  spread(pob_rec, n)
+
+# % de continente por tamaño de población  
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = pob_rec) %>% 
+  spread(pob_rec, n)
 
 ## Resumen con la media de lifeExp
 gapminder %>% 
@@ -392,38 +438,4 @@ gapminder %>%
   group_by(continent) %>% 
   summarise(media = mean(lifeExp),
             media_5 = mean(lifeExp) + 5) 
-
-
-
-## 13. Cambios de estructura  =============================================
-
-# Muchas veces los datos que importamos o las salidas mismas de funciones
-# no tienen el formato que queremos. Para cambiar eso podemos pasar los datos
-# de largo a anacho o de ancho a largo
-
-# Tomemos por ejemplo el resumen_2 que creamos previamente. 
-print(resumen_2)
-
-# Cada medida es una variable. Podríamos querer ver esta misma información en 
-# formato largo donde el tipo de medida (las columnas) se una variable, y 
-# los valores otra. Para esto tenemos que pasar el dataframe a formato largo:
-
-resumen_2_largo <- resumen_2 %>% 
-  pivot_longer(cols = -continent, # Unimos todas las columnas menos continent 
-               names_to = "medida", # Nombre de variable con las columnas 
-               values_to = "valor") # Nombre de variable con valores
-
-# Ahora a este mismo resumen podría querer transformarlo en una tabla más
-# parecida a lo que estamos acostumbrados a leer. La medida seguiría siendo
-# una columna pero los valores se distribuirían en dos columnas distintas: 
-# Americas y Europa. 
-
-# Para hacer esto pasamos de formato largo a ancho:
-resumen_2_largo %>% 
-  pivot_wider(names_from = continent, # Variable que pasa a distintas columnas
-              values_from = valor) # Variable donde se extraen los valores
-
-
-
-
 

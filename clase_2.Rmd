@@ -56,7 +56,7 @@ use_extra_styles(
 ---
 
 ## Directorios de trabajo 
-- Para abrir en R un archivo guardado en tu computadora, debes especificar en qué carpeta está guardado, para esto hay varias opciones. Hay muchas opciones, una de ellas es fijar un directorio por defecto (es decir, especificarle a R la carpeta en la que vamos a trabajar):
+- Para abrir en R un archivo guardado en tu computadora, debes especificar en qué carpeta está guardado. Hay muchas opciones, una de ellas es fijar un directorio por defecto (es decir, especificarle a R la carpeta en la que vamos a trabajar):
 
 .codefont[
 ```{r ej4, echo = TRUE, results = "hide", error=TRUE, eval = FALSE}
@@ -111,10 +111,10 @@ knitr::include_graphics("ima/carpeta_curso.png")
 
 Al comienzo de cada script **deben** especificar el directorio donde está su carpeta del curso, de lo contrario los códigos les van a devolver errores. 
 
-En este caso, por ejemplo, creé la carpeta "laboratorio" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
+En este caso, por ejemplo, creé la carpeta "cacrpeta_del_curso" dentro de una carpeta llamada "Medicion y diseño" dentro de "cursos". Para acceder al directorio completo vayan a donde esta su carpeta hagan click derecho en la carpeta, seleccionen "propiedades" y luego ahí bajo dirección pueden copiar el directorio.
 
 ```{r ejasdasda,  echo = TRUE, eval = FALSE}
-setwd("C:/Usuario/Martin/Dropbox/cursos/Medicion y diseño/laboratorio") 
+setwd("C:/Usuario/Martin/Dropbox/cursos/Medicion y diseño/cacrpeta_del_curso") 
 ```
 
 De esta forma, por ejemplo, si queremos leer una base de datos llamada "datauru.xlsx" que está guardada en la carpeta data dentro de la carpeta laboratorio, simplemente tenemos que especificar la siguiente dirección (porque R ya lo va a buscar dentro de la carpeta laboratorio)
@@ -138,9 +138,9 @@ class: inverse, center, middle
 
 - Existen varios paquetes que permiten importar y exportar datos desde distintos formatos. Algunos de los más utilizados son [readr](https://readr.tidyverse.org/), [haven](https://haven.tidyverse.org/), [readxl](https://readxl.tidyverse.org/) y [utils](https://www.rdocumentation.org/packages/utils/versions/3.6.2)
 
-- El primer paso es siempre identificar la extensión del archivo que queremos importar. Por ejemplo, las planillas excel (dependiendo de la versión) suelen tener extension .xlsx
+- El primer paso es siempre identificar la extensión del archivo que queremos importar. Por ejemplo, las planillas excel (dependiendo de la versión) suelen tener extension .xlsx. Pueden consultar la extensión de un archivo con botón derecho + propiedades
 
-- Pueden consultar la extensión de un archivo con botón derecho + propiedades
+- Luego deben identificar en qué carpeta está guardada esa base de datos.
 
 ---
 
@@ -383,6 +383,7 @@ addmargins(prop.table(tabla_1)) # Proporciones y totales
 ```
 ]
 
+
 ---
 class: inverse, center, middle
 
@@ -434,6 +435,22 @@ plot(data_gapminder$lifeExp, data_gapminder$gdpPercap,
 ```
 ]
 
+
+---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Importar el archivo excel en la carpeta data llamado "datauru"*
+
+*(2) Explorar las variables y el tipo de cada variable con la función glimpse()*
+
+*(3) Calcular la media de una variable numérica*
+
+*(4) Crear una tabla de proporciones con la distribución de la variable partido*
+
+*(5) Crear un gráfico de dispersión con las variables inflación (eje de las x) y aprobación (eje de las y)*
+]
 
 ---
 class: inverse, center, middle
@@ -709,6 +726,27 @@ identical(d_gap$mercosur, d_gap$mercosur2)
 ```
 ]
 
+
+---
+## Recodificación condicional con case_when y mutate
+
+Recodificación con valores numéricos. Supongamos que queremos crear una nueva variable pob_rec, que clasifica a los países en población grande (más de 20 millones), mediana (entre 5 y 20) o pequeña (menos de 5)
+
+.codefont[
+```{r ej28f3sdas, echo = TRUE}
+d_gap <- d_gap %>% 
+  mutate(pob_rec = case_when(
+    pop >= 20000000 ~ "Grande",
+    pop >= 5000000 & pop < 20000000 ~ "Mediana",
+    pop < 5000000 ~ "Pequeña",
+    TRUE ~ "Error")
+  ) 
+
+table(d_gap$pob_rec)
+```
+]
+
+
 ---
 
 ## Recodificación condicional con case_when y mutate
@@ -733,9 +771,92 @@ class: inverse, center, middle
 # Resumenes y tablas
 
 ---
+## Resumir datos: tablas simples
+
+Con `count()` podemos hacer lo mismo que con `table()`, pero en el contexto del tidyverse. Con un simple `mutate()` podemos transformar la frecuencia simple en proporción o porcentaje
+
+.codefontchico[
+```{r ch9sdasss, echo = TRUE}
+# Frecuencia simple
+d_gap %>% 
+  count(continent)
+
+# Frecuencia proporción
+d_gap %>% 
+  count(continent) %>% 
+  mutate(per = n/sum(n)*100) %>% # Porcentaje
+  mutate(prop = n/sum(n)) # Proporción
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando usamos `count()` con dos variables vemos que la salida está en formato largo. Eso nos puede servir para graficar si usamos ggplot2 y para otros paquetes, pero no es como generalmente queremos leer una tabla para interpretarla. 
+
+.codefontchico[
+```{r ch9ssdsdsdas, echo = TRUE}
+# Tabla cruzada en formato largo
+d_gap %>% 
+  count(continent, pob_rec)
+
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+ Para pasar a formato ancho podemos utilizar la función `spread()`. El primer argumento dentro de `spread()` es la variable que queremos que pase a ser columnas y el segundo argumento la variable que contiene los valores.
+
+.codefont[
+```{r ch9ssssdsdsdas, echo = TRUE}
+# Tabla cruzada en formato ancho
+d_gap %>% 
+  count(continent, pob_rec) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
+## Resumir datos: tablas cruzadas
+
+Cuando analizamos tablas cruzadas, muchas veces queremos ver procentajes en lugar de frecuencias. Para ello podemos transformar la frecuencia en porcentaje.
+
+.codefont[
+```{r ch9sdas2222, echo = TRUE}
+# Porcentaje total
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
+## Resumir datos: tablas cruzada
+
+Cuando trabajamos con procentajes en tablas cruzadas, tenemos que considerar el total del %. En el ejemplo anterior el porcentaje era sobre el total, muchas veces queremos calcularlo sobre cada fila o cada columna
+
+.codefontchico[
+```{r ch9sdas1111, echo = TRUE}
+# % de paises en cada tamaño de población por continente 
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = continent) %>% 
+  spread(pob_rec, n)
+
+# % de continente por tamaño de población  
+d_gap %>% 
+  count(continent, pob_rec) %>%
+  mutate(n = n/sum(n)*100, .by = pob_rec) %>% 
+  spread(pob_rec, n)
+```
+]
+
+---
 ## Resumir datos 
 
-Resumir datos (tablas descriptivas) es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
+Resumir datos con estadísticos descriptivos es una de las partes fundamentales del análisis de datos. Para ello utilizaremos la función `summarise()` o `summarize()`, muchas veces en conjunto con `group_by()`. 
 
 Escencialmente `summarise()` resume un dataframe en una fila según una estadística especificada. Por ejemplo, calculando la media de una variable
 
@@ -820,76 +941,35 @@ resumen_2
 ```
 ]
 
----
-class: inverse, center, middle
 
-# Estructura de datos
+<!-- --- -->
 
----
-## Cambios de estructura
+<!-- ## Ejercicio -->
 
-Muchas veces los resultados de funciones no están en el formato que queremos. Para pasar datos a otras estructuras tenemos las funciones `pivot_longer()` (para pasar de formato ancho a largo) y `pivot_wider()` (para pasar de formarto largo a ancho) del paquete tidyr.
+<!-- .content-box-blue[ -->
+<!-- *(1) Con la data de gapminder crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)* -->
 
-.center[
-```{r, out.width = "600px"}
-knitr::include_graphics("ima/wide_long.png")
-```
-]
+<!-- *(2) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida* -->
 
----
-## De ancho a largo con pivot_longer()
+<!-- *(3) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):* -->
+<!-- ] -->
 
-.center[
-```{r, out.width = "1000px"}
-knitr::include_graphics("ima/wide_ima.png")
-```
-]
+<!-- ```{r chsadasdas13, echo = FALSE} -->
+<!-- d_gap <- d_gap %>%  -->
+<!--   mutate(vida_rec = case_when( -->
+<!--     lifeExp >= 75 ~ "Alta", -->
+<!--     lifeExp >= 65 & lifeExp < 75 ~ "Media", -->
+<!--     lifeExp < 65 ~ "Baja" -->
+<!--   )) -->
+<!-- ``` -->
 
-.right[[Wichkham & Grolemund (2018)](https://r4ds.had.co.nz/tidy-data.html)]
+<!-- ```{r ch1sadsa3, echo = FALSE} -->
+<!-- d_gap %>%  -->
+<!--   count(continent, vida_rec) %>%  -->
+<!--   mutate(n = n/sum(n), .by = continent) %>%  -->
+<!--   spread(vida_rec, n) -->
+<!-- ``` -->
 
----
-## De ancho a largo con pivot_longer()
-
-.codefontchico[
-```{r ch124, echo = TRUE, message=FALSE}
-print(resumen_2)
-
-resumen_2_largo <- resumen_2 %>% 
-  pivot_longer(cols = -continent, # Columnas a unir 
-               names_to = "medida", # Nombre de variable "key" 
-               values_to = "valor") # Nombre de variable con valores
-
-print(resumen_2_largo)
-```
-]
-
----
-## De largo a ancho con pivot_wider()
-
-.center[
-```{r, out.width = "800px"}
-knitr::include_graphics("ima/long_ima.png")
-```
-]
-
-.right[[Wichkham & Grolemund (2018)](https://r4ds.had.co.nz/tidy-data.html)]
-
----
-## De largo a ancho con pivot_wider()
-
-.codefontchico[
-```{r ch126, echo = TRUE, message=FALSE}
-print(resumen_2_largo)
-
-resumen_2_largo %>% 
-  pivot_wider(names_from = continent, # Variable que pasa a distintas columnas
-              values_from = valor) # Variable donde se extraen los valores
-```
-]
-
-
-
-
-
-
-
+<!-- .content-box-blue[ -->
+<!-- *(4) Crear una tabla con * -->
+<!-- ] -->
