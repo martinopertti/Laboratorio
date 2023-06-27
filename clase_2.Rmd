@@ -265,70 +265,6 @@ write_sas(data_gapminder, "resultados/gapminder.sas")
 ]
 
 ---
-
-## Etiquetas cuando importamos datos
-
-- Cuando importamos datos que tienen etiquetas (por ejemplo de formatos como Stata o SPSS) debemos tener cuidado con cómo manejar estas etiquetas
-
-- Por ejemplo, supongamos que queremos leer los datos de una encuesta con dos variables, guardada en formato Stata (`.dta`), con el paquete `haven`:
-
-.codefont[
-```{r ej13bb, echo = TRUE}
-data <- haven::read_stata("data/ej_encuesta.dta")
-head(data, 5)
-```
-]
-
-- Por defecto se leen como variables de tipo `double` (numérica) con etiquetas como atributos
-
----
-
-## Etiquetas cuando importamos datos
-
-Si queremos quedarnos directamente coon las etiquetas, podemos utilizar la funcion `as_factor`:
-
-```{r ej13bc, echo = TRUE}
-data <- haven::read_stata("data/ej_encuesta.dta") %>% 
-  as_factor()
-head(data, 5)
-```
-
----
-
-## Importar y exportar datos: factores
-
-- Otro tipo de variables en R son los factores (factors), utilizados para representar data categórica. Estos suelen confundirse con las variables de caracteres pero tienen algunas diferencias. 
-
-- Normalmente los factores son utilizados para las variables de caracteres con un número de valores posibles fijo y cierto orden (opcional)
-
-- A R le gusta transformar las variables de caracteres en factores al importarlas (si usamos R Base particularmente).
-
-- El paquete [forcats](https://forcats.tidyverse.org/) (dentro del Tidyverse) ayuda a manejar variables de caracteres y factores:
-    - `fct_relevel()` cambia manualmente el orden de los niveles
-    - `fct_reoder()` cambia el orden de los niveles de acuerdo a otra variable
-    - `fct_infreq()` reordena un factor por la frecuencia de sus valores 
-    - `fct_lump()` collapsa los valores menos frecuentes en otra categoría "other". Es muy útil para preparar datos para tablas y gráficos
-
----
-
-## Importar y exportar datos: factores 
-
-.codefontchico[
-```{r ej13, echo = TRUE}
-# Podemos chequear y coercionar factores
-data_gapminder <- gapminder
-is.factor(data_gapminder$continent) # Chequeo si es factor
-levels(data_gapminder$continent) # Chequeo los niveles
-# Transformo a caracter
-data_gapminder$continent <- as.character(data_gapminder$continent) 
-class(data_gapminder$continent)
-# De vuelta a factor
-data_gapminder$continent <- as.factor(data_gapminder$continent)
-class(data_gapminder$continent)
-```
-]
-
----
 class: inverse, center, middle
 
 # Explorar Dataframes 
@@ -766,9 +702,28 @@ table(d_gap$var1)
 ]
 
 ---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Abran un script nuevo y tomen el dataframe de gapminder (importarlo de la carpeta data o descargarlo desde el paquete gapminder como debajo, y filtrar para la base para quedarnos solamente con las observaciones América y Oceania*
+
+```{r ej28o___2, echo = TRUE}
+library(gapminder)
+gapminder <- gapminder
+```
+
+*(2) En ese mismo dataframe con solamente las observaciones de América y Oceanía seleccionar solamente tres variables: country y lifeExp*
+
+*(3) En ese mismo dataframe, crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)*
+
+*(4) Asegurarse de hacer los primeros 3 pasos en un mismo pipeline*
+]
+
+---
 class: inverse, center, middle
 
-# Resumenes y tablas
+# Tablas cruzadas
 
 ---
 ## Resumir datos: tablas simples
@@ -852,6 +807,12 @@ d_gap %>%
   spread(pob_rec, n)
 ```
 ]
+
+
+---
+class: inverse, center, middle
+
+# Tablas con estadísticas descriptivas
 
 ---
 ## Resumir datos 
@@ -941,35 +902,37 @@ resumen_2
 ```
 ]
 
+---
+## Exportar tablas
 
-<!-- --- -->
+Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los podemos exportar fácilmente a otros tipos de archivos. Veamos como exportar una tabla con la funcion `write_xlsx()` del paquete `writexl`. Ya habíamos creado la tabla "resumen_2", entonces con una sola línea de código la podemos guardar. La función `write_xlsx()` tiene dos argumentos principales, el dataframe a ser guardado y el directorio donde ser guardado junto con el nombre del archivo que vamos a crear. Tener en cuenta que si el directorio y nombre de un archivo coincide con el de otro archivo ya existente en la computadora, lo sobreeescribirá.
 
-<!-- ## Ejercicio -->
+.codefont[
+```{r ch13___8, echo = TRUE}
+library(writexl)
+writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
+```
+]
 
-<!-- .content-box-blue[ -->
-<!-- *(1) Con la data de gapminder crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)* -->
 
-<!-- *(2) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida* -->
+---
 
-<!-- *(3) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):* -->
-<!-- ] -->
+## Ejercicio
 
-<!-- ```{r chsadasdas13, echo = FALSE} -->
-<!-- d_gap <- d_gap %>%  -->
-<!--   mutate(vida_rec = case_when( -->
-<!--     lifeExp >= 75 ~ "Alta", -->
-<!--     lifeExp >= 65 & lifeExp < 75 ~ "Media", -->
-<!--     lifeExp < 65 ~ "Baja" -->
-<!--   )) -->
-<!-- ``` -->
+.content-box-blue[
+*(1) En el mismo script que el ejercicio anterior, utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida*
 
-<!-- ```{r ch1sadsa3, echo = FALSE} -->
-<!-- d_gap %>%  -->
-<!--   count(continent, vida_rec) %>%  -->
-<!--   mutate(n = n/sum(n), .by = continent) %>%  -->
-<!--   spread(vida_rec, n) -->
-<!-- ``` -->
+*(2) Ahora crear una tabla cruzada entre country y la variable recodificada de expectativa de vida (solo con el número de casos, no %)*
 
-<!-- .content-box-blue[ -->
-<!-- *(4) Crear una tabla con * -->
-<!-- ] -->
+*(3) Hay algún país con observaciones en las tres categorías de nuestra variable?*
+
+*(4) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):*
+
+*(5) Por último crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
+
+]
+
+
+
+
+

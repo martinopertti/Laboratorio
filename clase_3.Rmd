@@ -1,0 +1,129 @@
+---
+title: "Medición y diseño de investigación"
+subtitle: "Clase 3: Análisis de datos"
+author: "FCS-UdelaR - Martín Opertti y Fabricio Carneiro"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output:
+  xaringan::moon_reader:
+    css: ["xaringan-themer.css", "estilo.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      incremental: true
+      df_print: kable  
+      smaller: true
+      widescreen: true
+      highlightLines: true
+---
+class: inverse, center, middle
+
+```{r setup, include=FALSE}
+library(xaringanthemer)
+library(kableExtra)
+library(xaringan)
+library(tidyverse)
+library(data.table)
+library(xaringanExtra)
+
+style_duo_accent(primary_color = "#0E6251",
+                 secondary_color = "#507786",
+                 text_font_family = "Droid Serif",
+                 text_font_url = "https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic",
+                 header_font_google = google_font("Yanone Kaffeesatz"),
+                 text_slide_number_color = "#000000")
+knitr::opts_chunk$set(echo = FALSE)
+options("kableExtra.html.bsTable" = T)
+
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_scribble()
+use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE
+  )  
+```
+
+# Importar datos con etiquetas 
+
+---
+## Etiquetas cuando importamos datos
+
+- Cuando importamos datos que tienen etiquetas (por ejemplo de formatos como Stata o SPSS) debemos tener cuidado con cómo manejar estas etiquetas
+
+- Por ejemplo, supongamos que queremos leer los datos de una encuesta con dos variables, guardada en formato Stata (`.dta`), con el paquete `haven`:
+
+.codefont[
+```{r ej13bb, echo = TRUE}
+data <- haven::read_stata("data/ej_encuesta.dta")
+head(data, 5)
+```
+]
+
+- Por defecto se leen como variables de tipo `double` (numérica) con etiquetas como atributos
+
+---
+
+## Etiquetas cuando importamos datos
+
+Si queremos quedarnos directamente coon las etiquetas, podemos utilizar la funcion `as_factor`:
+
+```{r ej13bc, echo = TRUE}
+data <- haven::read_stata("data/ej_encuesta.dta") %>% 
+  as_factor()
+head(data, 5)
+```
+
+---
+
+## Importar y exportar datos: factores
+
+- Otro tipo de variables en R son los factores (factors), utilizados para representar data categórica. Estos suelen confundirse con las variables de caracteres pero tienen algunas diferencias. 
+
+- Normalmente los factores son utilizados para las variables de caracteres con un número de valores posibles fijo y cierto orden (opcional)
+
+- A R le gusta transformar las variables de caracteres en factores al importarlas (si usamos R Base particularmente).
+
+- El paquete [forcats](https://forcats.tidyverse.org/) (dentro del Tidyverse) ayuda a manejar variables de caracteres y factores:
+    - `fct_relevel()` cambia manualmente el orden de los niveles
+    - `fct_reoder()` cambia el orden de los niveles de acuerdo a otra variable
+    - `fct_infreq()` reordena un factor por la frecuencia de sus valores 
+    - `fct_lump()` collapsa los valores menos frecuentes en otra categoría "other". Es muy útil para preparar datos para tablas y gráficos
+
+---
+
+## Importar y exportar datos: factores 
+
+.codefontchico[
+```{r ej13, echo = TRUE}
+# Podemos chequear y coercionar factores
+data_gapminder <- gapminder
+is.factor(data_gapminder$continent) # Chequeo si es factor
+levels(data_gapminder$continent) # Chequeo los niveles
+# Transformo a caracter
+data_gapminder$continent <- as.character(data_gapminder$continent) 
+class(data_gapminder$continent)
+# De vuelta a factor
+data_gapminder$continent <- as.factor(data_gapminder$continent)
+class(data_gapminder$continent)
+```
+]
+
+---
+class: inverse, center, middle
+
+# Estimación muestras
+
+---
+class: inverse, center, middle
+
+# Regresión lineal
+
+---

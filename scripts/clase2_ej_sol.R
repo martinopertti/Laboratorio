@@ -1,94 +1,108 @@
 
 ## ***************************************************************************
-##  Día 2: Manipulación de datos          
+##  Módulo 2: Manipulación de datos          
 ##  Solución de ejercicio                                          
 ##  Medición y diseño de investigación
 ##  Martín Opertti y Fabricio Carneiro - 2023                                         
 ## ***************************************************************************
 
-## Trabajaremos con un dataframe con datos de económicos y políticos de Uruguay. 
-# La base se llama "datauru" y esta en formato excel (.xlsx)
+## Trabajaremos con una base de datos con datos económicos y sociales de 
+# distintos países, descargada del banco mundial con datos de 2018.
 
-## 1. Importar dataframe "datauru" y asignarle el mismo nombre "datauru" y cargar
-# el paquete tidyverse y readxl (usar funcion read_excel() para importar la base)
-# de datos
+# La base se llama "wb_paises" y esta en formato excel (.xlsx)
+
+## 1. Importar dataframe "wb_paises" y asignarla con el nombre df_paises.
+# Cargar el paquete tidyverse y readxl  (usar funcion read_excel() para 
+# importar la base de datos)
+
 library(tidyverse)
 library(readxl)
 
 rm(list=ls())
 
-datauru <- read_excel("data/datauru.xlsx")
+df_paises <- read_excel("data/wb_paises.xlsx")
 
-## 2. Imprime "datauru" y fijate las variables del dataframe y su tipo
-# (puedes ayudarte con el codebook que está en la carpeta "data")
-print(datauru)
+## 2. Usa la función glimpse() para explorar "df_paises" y explorar  las variables 
+# y su tipo (puedes ayudarte con el codebook que está en la carpeta "data")
+glimpse(df_paises)
 
-## 3. Cuántas variables y observaciones tiene datauru?
-dim(datauru)
+## 3. ¿Cuál es el rango de la variable de acceso a electricidad? 
+# Estar atento a usar el argumento na.rm = TRUE
+range(df_paises$acceso_electricidad, na.rm = TRUE)
 
-## 4. Usa glimpse() para obtener un resumen de las variables
-glimpse(datauru)
+## 4. ¿Cuál es el promedio de población total?
+mean(df_paises$pob_total, na.rm = TRUE)
 
-## 5. ¿Cuál es el rango de años para los cuales datauru tiene datos?
-range(datauru$anio)
+## 5. ¿Cuál es la relación entre el gasto en educación y el gasto en salud? 
+# Explorar con un gráfico de dispersión 
+plot(df_paises$gasto_educacion, df_paises$gasto_salud,
+     main = "Relación entre gasto en salud y en educación")
 
-## 6. ¿Cuál es el promedio de inflación y de aprobación presidencial en Uruguay 
-# en los años que tenemos datos?
-mean(datauru$inflacion)
-mean(datauru$aprobacion, na.rm = TRUE)
+## 6. Crea una variable "pbi_pc" que calcule el PBI per capita (utilizando las
+# variables pbi y pob_total)
+df_paises <- df_paises %>% 
+  mutate(pbi_pc = pbi / pob_total)
 
-## 7. ¿Cuál es el porcentaje máximo de aprobación de presidente en un año en 
-# Uruguay?
-max(datauru$aprobacion, na.rm = TRUE)
+## 7. Crear una nueva variable llamada gini_rec que codifique la  variable 
+# en tres grupos "bajo", "medio" y "alto". Crear un histrograma para 
+# elegir los puntos de corte (definirlos ustedes)
+hist(df_paises$indice_de_gini)
 
-## 8. Crea un histograma con la distribución del crecimiento anual de pbi per
-# capita (crec_pbi)
-hist(datauru$crec_pbi, 
-     main = "Crecimiento anual del PBI per cápita en Uruguay")
+df_paises <- df_paises %>% 
+  mutate(gini_rec = case_when(
+    indice_de_gini < 30 ~ "Bajo",
+    indice_de_gini >= 30 & indice_de_gini <= 40 ~ "Medio",
+    indice_de_gini > 40 ~ "Alto"
+  ))
 
-## 9. ¿Cuál es la relación entre la inflación y el PBI en Uruguay? Un gráfico
-# de dispersión puede ayudar
-plot(datauru$pbi, datauru$inflacion,
-     main = "Relación entre inflación y PBI en Uruguay")
+table(df_paises$gini_rec)
 
-## 10. Crea una variable "pbi_pc" que calcule el PBI per capita (utilizando las
-# variables pbi y poblacion)
-datauru <- mutate(datauru, pbi_pc = pbi / poblacion)
+## 8. Crear un nuevo dataframe a partir de df_paises eliminando las  
+# observaciones de los paises grupo de ingresos bajos ("Low income") en la 
+# variable grupo ingreso y luego seleccionar unicamente las variables:
+# pais, region grupo_ingreso, acceso_electricidad y indice_de_gini
+df_paises_2 <- df_paises %>% 
+  filter(grupo_ingreso != "Low income") %>% 
+  select(pais, region, grupo_ingreso, acceso_electricidad, indice_de_gini)
 
-## 11. Crea un gráfico de dispersión con gdp_lcu y la nueva variable gdp_pc
-plot(datauru$pbi, datauru$pbi_pc,
-     main = "Relación entre PBI y PBI per cápita en Uruguay")
+## 9. A partir de este nuevo dataframe crear una tabla cruzada entre 
+# region y grupo_ingreso
+df_paises_2 %>% 
+  count(region, grupo_ingreso) %>% 
+  spread(grupo_ingreso, n)
 
-## 12. Crea una variable binaria "inf_digitos"que indique si la inflación tiene 
-# dos dígitos o no
-datauru <- mutate(datauru, inf_digitos = case_when(inflacion >= 10 ~ 1,
-                                                   TRUE ~ 0))
+## 10. Crear la misma tabla pero con los % por fila. ¿Qué región tiene mayor
+# % de países de alto ingreso (high income)?
+df_paises_2 %>% 
+  count(region, grupo_ingreso) %>% 
+  mutate(n = n/sum(n)*100, .by = region) %>%
+  spread(grupo_ingreso, n)
 
-## 13. Crear una nueva variable que indique los años con inflación y desempleo
-# de un dígito
-datauru <- datauru %>% 
-  mutate(inf_desempleo = case_when(inflacion < 10 & desempleo < 10 ~ 1,
-                                   TRUE ~ 0))
-table(datauru$inf_desempleo)
+# La región es América del Norte (North America) con el 100%
 
-## 14. Crear un nuevo dataframe a partir de datauru pero solo con las 
-# observaciones de 1990 en adelante y solo las variables anio, presidente,
-# inflacion y aprobacion. Usar el pipeline
-datauru_2 <- datauru %>% 
-  filter(anio >= 1990) %>% 
-  select(anio, presidente, aprobacion, inflacion)
-
-## 15. A partir del dataframe creado en el punto anterior, Crear una tabla
-# resumen con la media y desvío de inflación y aprobación por presidente
-tabla_resumen <- datauru_2 %>% 
-  group_by(presidente) %>% 
-  summarise(media_inflacion = mean(inflacion),
-            desvio_inflacion = sd(inflacion),
-            media_aprobacion = mean(aprobacion),
-            desvio_aprobacion = mean(aprobacion))
+## 11. A partir del dataframe creado en el punto anterior, Crear una tabla
+# resumen con la media y desvío del acceso a electricidad e indice de gini
+# por region (calcular las estadísticas sin tener en cuenta los datos perdidos)
+tabla_resumen <- df_paises_2 %>% 
+  group_by(region) %>% 
+  summarise(media_ele = mean(acceso_electricidad, na.rm = TRUE),
+            desvio_ele = sd(acceso_electricidad, na.rm = TRUE),
+            media_gini = mean(indice_de_gini, na.rm = TRUE),
+            desvio_gini = mean(indice_de_gini, na.rm = TRUE))
 
 tabla_resumen
 
+## 12. A partir de la tabla anterior, ¿cuál es la región más desigual (con el
+# indice de gini más alto)? (escribir respuesta)
+
+# Es América Latina
 
 
+## 13. ¿Cuál es la región con mayor variación en el acceso a electricidad?
+
+# Africa Sub-Sahariana
+
+
+## 14. Exportar la tabla del punto anterior en un archivo excel 
+writexl::write_xlsx(tabla_resumen, "resultados/tabla_resumen.xlsx")
 

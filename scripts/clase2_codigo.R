@@ -1,6 +1,6 @@
 
 ## ***************************************************************************
-##  Día 2: Manipulación de datos          
+##  Módulo 2: Manipulación de datos          
 ##  Código de la presentación                                      
 ##  Medición y diseño de investigación
 ##  Martín Opertti y Fabricio Carneiro - 2023                                         
@@ -102,27 +102,7 @@ write_sas(d_gap, "resultados/gapminder.sas")
 
 
 
-##  4. Factores  ============================================================
-
-rm(list = ls())
-
-d_gap <- gapminder
-
-# Podemos chequear y coercionar factores
-is.factor(d_gap$continent) # Chequeo si es factor
-levels(d_gap$continent) # Chequeo los niveles
-
-# Transformo a caracter
-d_gap$continent <- as.character(d_gap$continent)
-class(d_gap$continent)
-
-# De vuelta a factor
-d_gap$continent <- as.factor(d_gap$continent) 
-class(d_gap$continent)
-
-
-
-##  5. Explorar datos  ======================================================
+##  4. Explorar datos  ======================================================
 
 # R tiene un visor para datos. Pueden clickear en el dataframe en el ambiente o:
 View(d_gap)
@@ -146,7 +126,7 @@ addmargins(prop.table(tabla_1)) # Proporciones y totales
 
 
 
-## 6. Estadisticos descriptivos ============================================
+## 5. Estadisticos descriptivos ============================================
 
 # R cuenta también con funciones para obtener estadísticos descriptivos
 mean(d_gap$lifeExp) # Media
@@ -167,7 +147,7 @@ plot(d_gap$lifeExp, d_gap$gdpPercap,
 
 
 
-##  7. Filtrar observaciones   ==============================================
+##  6. Filtrar observaciones   ==============================================
 
 ## Una de las transformaciones más frecuentes cuando manipulamos datos 
 # Tenemos datos de muchos años:
@@ -192,7 +172,7 @@ table(gapminder_esp$year)
 
 
 
-##  8. Seleccionar variables (columnas)  ====================================
+##  7. Seleccionar variables (columnas)  ====================================
 
 d_gap <- gapminder # cargo la base de vuelta
 colnames(d_gap)
@@ -209,7 +189,7 @@ select(d_gap, 1:3) # Orden numérico
 
 
 
-##  9. Pipeline   ===========================================================
+##  8. Pipeline   ===========================================================
 
 # Supongamos que queremos filtrar la base para quedarnos con las observaciones
 # del año 2007 y del continente americano. Y desoués quedemos borrar la variable
@@ -228,11 +208,11 @@ print(gapminder_07_america)
 
 
 
-##  10. Crear y recodificar variables   ======================================
+##  9. Crear y recodificar variables   ======================================
 
 rm(list=ls())
 
-## 10.1.  Crear variables con mutate() de dplyr ----
+## 9.1.  Crear variables con mutate() de dplyr ----
 
 d_gap <- gapminder
 head(d_gap, 3)
@@ -265,7 +245,7 @@ d_gap <- mutate(d_gap, gdp_log = log(gdp))
 head(d_gap, 3)
 
 
-## 10.3 Transformar tipo de datos de variables 
+## 9.2 Transformar tipo de datos de variables 
 
 # Exploro tipo de variables
 glimpse(d_gap)
@@ -287,12 +267,12 @@ glimpse(d_gap)
 
 
 
-## 11. Recodificaciones condicionales =========================================
+## 10. Recodificaciones condicionales =========================================
 
 rm(list=ls())
 
 
-## 11.1. Recodificación con case_when() ----
+## 10.1. Recodificación con case_when() ----
 d_gap <- gapminder
 
 # Creemos una variable que indique si el país es Uruguay o no
@@ -346,7 +326,7 @@ table(d_gap$var1)
 
 
 
-## 12. Resumir datos  ====================================================
+## 11. Resumir datos  ====================================================
 
 # Frecuencia simple
 d_gap %>% 
@@ -439,3 +419,8 @@ gapminder %>%
   summarise(media = mean(lifeExp),
             media_5 = mean(lifeExp) + 5) 
 
+
+## Por último, para exportar nuestros resultados volvemos a usar write_xlsx()
+# Por ejemplo exportemos resultados_2
+library(writexl)
+writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")

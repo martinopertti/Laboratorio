@@ -4,7 +4,7 @@
     <title>Medición y diseño de investigación</title>
     <meta charset="utf-8" />
     <meta name="author" content="FCS-UdelaR - Martín Opertti y Fabricio Carneiro" />
-    <meta name="date" content="2023-06-26" />
+    <meta name="date" content="2023-06-27" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -38,7 +38,7 @@ class: center, middle, inverse, title-slide
 ### FCS-UdelaR - Martín Opertti y Fabricio Carneiro
 ]
 .date[
-### June 26, 2023
+### June 27, 2023
 ]
 
 ---
@@ -298,120 +298,6 @@ write_sav(data_gapminder, "resultados/gapminder.sav")
 
 # Guardar .sas (SAS)
 write_sas(data_gapminder, "resultados/gapminder.sas")
-```
-]
-
----
-
-## Etiquetas cuando importamos datos
-
-- Cuando importamos datos que tienen etiquetas (por ejemplo de formatos como Stata o SPSS) debemos tener cuidado con cómo manejar estas etiquetas
-
-- Por ejemplo, supongamos que queremos leer los datos de una encuesta con dos variables, guardada en formato Stata (`.dta`), con el paquete `haven`:
-
-.codefont[
-
-```r
-data &lt;- haven::read_stata("data/ej_encuesta.dta")
-head(data, 5)
-```
-
-```
-## # A tibble: 5 × 2
-##   P1              P14                 
-##   &lt;dbl+lbl&gt;       &lt;dbl+lbl&gt;           
-## 1  4 [Colonia]    1 [Muy mala]        
-## 2 18 [Tacuarembó] 2 [Mala]            
-## 3 15 [Salto]      5 [Muy buena]       
-## 4  1 [Artigas]    3 [Ni buena ni mala]
-## 5 10 [Montevideo] 1 [Muy mala]
-```
-]
-
-- Por defecto se leen como variables de tipo `double` (numérica) con etiquetas como atributos
-
----
-
-## Etiquetas cuando importamos datos
-
-Si queremos quedarnos directamente coon las etiquetas, podemos utilizar la funcion `as_factor`:
-
-
-```r
-data &lt;- haven::read_stata("data/ej_encuesta.dta") %&gt;% 
-  as_factor()
-head(data, 5)
-```
-
-```
-## # A tibble: 5 × 2
-##   P1         P14             
-##   &lt;fct&gt;      &lt;fct&gt;           
-## 1 Colonia    Muy mala        
-## 2 Tacuarembó Mala            
-## 3 Salto      Muy buena       
-## 4 Artigas    Ni buena ni mala
-## 5 Montevideo Muy mala
-```
-
----
-
-## Importar y exportar datos: factores
-
-- Otro tipo de variables en R son los factores (factors), utilizados para representar data categórica. Estos suelen confundirse con las variables de caracteres pero tienen algunas diferencias. 
-
-- Normalmente los factores son utilizados para las variables de caracteres con un número de valores posibles fijo y cierto orden (opcional)
-
-- A R le gusta transformar las variables de caracteres en factores al importarlas (si usamos R Base particularmente).
-
-- El paquete [forcats](https://forcats.tidyverse.org/) (dentro del Tidyverse) ayuda a manejar variables de caracteres y factores:
-    - `fct_relevel()` cambia manualmente el orden de los niveles
-    - `fct_reoder()` cambia el orden de los niveles de acuerdo a otra variable
-    - `fct_infreq()` reordena un factor por la frecuencia de sus valores 
-    - `fct_lump()` collapsa los valores menos frecuentes en otra categoría "other". Es muy útil para preparar datos para tablas y gráficos
-
----
-
-## Importar y exportar datos: factores 
-
-.codefontchico[
-
-```r
-# Podemos chequear y coercionar factores
-data_gapminder &lt;- gapminder
-is.factor(data_gapminder$continent) # Chequeo si es factor
-```
-
-```
-## [1] TRUE
-```
-
-```r
-levels(data_gapminder$continent) # Chequeo los niveles
-```
-
-```
-## [1] "Africa"   "Americas" "Asia"     "Europe"   "Oceania"
-```
-
-```r
-# Transformo a caracter
-data_gapminder$continent &lt;- as.character(data_gapminder$continent) 
-class(data_gapminder$continent)
-```
-
-```
-## [1] "character"
-```
-
-```r
-# De vuelta a factor
-data_gapminder$continent &lt;- as.factor(data_gapminder$continent)
-class(data_gapminder$continent)
-```
-
-```
-## [1] "factor"
 ```
 ]
 
@@ -1094,9 +980,29 @@ table(d_gap$var1)
 ]
 
 ---
+
+## Ejercicio
+
+.content-box-blue[
+*(1) Abran un script nuevo y tomen el dataframe de gapminder (importarlo de la carpeta data o descargarlo desde el paquete gapminder como debajo, y filtrar para la base para quedarnos solamente con las observaciones América y Oceania*
+
+
+```r
+library(gapminder)
+gapminder &lt;- gapminder
+```
+
+*(2) En ese mismo dataframe con solamente las observaciones de América y Oceanía seleccionar solamente tres variables: country y lifeExp*
+
+*(3) En ese mismo dataframe, crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)*
+
+*(4) Asegurarse de hacer los primeros 3 pasos en un mismo pipeline*
+]
+
+---
 class: inverse, center, middle
 
-# Resumenes y tablas
+# Tablas cruzadas
 
 ---
 ## Resumir datos: tablas simples
@@ -1276,6 +1182,12 @@ d_gap %&gt;%
 ```
 ]
 
+
+---
+class: inverse, center, middle
+
+# Tablas con estadísticas descriptivas
+
 ---
 ## Resumir datos 
 
@@ -1427,38 +1339,41 @@ resumen_2
 ```
 ]
 
+---
+## Exportar tablas
 
-&lt;!-- --- --&gt;
+Las tablas y resumenes de salida de tidyverse son dataframes. Como tales, los podemos exportar fácilmente a otros tipos de archivos. Veamos como exportar una tabla con la funcion `write_xlsx()` del paquete `writexl`. Ya habíamos creado la tabla "resumen_2", entonces con una sola línea de código la podemos guardar. La función `write_xlsx()` tiene dos argumentos principales, el dataframe a ser guardado y el directorio donde ser guardado junto con el nombre del archivo que vamos a crear. Tener en cuenta que si el directorio y nombre de un archivo coincide con el de otro archivo ya existente en la computadora, lo sobreeescribirá.
 
-&lt;!-- ## Ejercicio --&gt;
+.codefont[
 
-&lt;!-- .content-box-blue[ --&gt;
-&lt;!-- *(1) Con la data de gapminder crear una nueva variable que divida la expectativa de vida en 3 categorías: "Alta" (mayor o igual a 75 años); "Media" (mayor o igual a 65 y menor a 75 y "Baja" (menor a 65 años)* --&gt;
+```r
+library(writexl)
+writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
+```
+]
 
-&lt;!-- *(2) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida* --&gt;
 
-&lt;!-- *(3) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):* --&gt;
-&lt;!-- ] --&gt;
+---
 
-&lt;!-- ```{r chsadasdas13, echo = FALSE} --&gt;
-&lt;!-- d_gap &lt;- d_gap %&gt;%  --&gt;
-&lt;!--   mutate(vida_rec = case_when( --&gt;
-&lt;!--     lifeExp &gt;= 75 ~ "Alta", --&gt;
-&lt;!--     lifeExp &gt;= 65 &amp; lifeExp &lt; 75 ~ "Media", --&gt;
-&lt;!--     lifeExp &lt; 65 ~ "Baja" --&gt;
-&lt;!--   )) --&gt;
-&lt;!-- ``` --&gt;
+## Ejercicio
 
-&lt;!-- ```{r ch1sadsa3, echo = FALSE} --&gt;
-&lt;!-- d_gap %&gt;%  --&gt;
-&lt;!--   count(continent, vida_rec) %&gt;%  --&gt;
-&lt;!--   mutate(n = n/sum(n), .by = continent) %&gt;%  --&gt;
-&lt;!--   spread(vida_rec, n) --&gt;
-&lt;!-- ``` --&gt;
+.content-box-blue[
+*(1) En el mismo script que el ejercicio anterior, utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida*
 
-&lt;!-- .content-box-blue[ --&gt;
-&lt;!-- *(4) Crear una tabla con * --&gt;
-&lt;!-- ] --&gt;
+*(2) Ahora crear una tabla cruzada entre country y la variable recodificada de expectativa de vida (solo con el número de casos, no %)*
+
+*(3) Hay algún país con observaciones en las tres categorías de nuestra variable?*
+
+*(4) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):*
+
+*(5) Por último crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
+
+]
+
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
