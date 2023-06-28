@@ -409,7 +409,7 @@ El paquete dplyr contiene funciones muy útiles para la transformación de dataf
 Una de las tareas más comunes en el análisis de datos es filtrar observaciones en base a condiciones. Existen muchas maneras de filtrar datos en R, la función `filter()` de dplyr es una de las más sencillas de utilizar. El primer argumento es el dataframe y el segundo la condición por la que queremos filtrar.
 
 .codefont[
-```{r ch1, echo = TRUE}
+```{r chsdsdsds1, echo = TRUE}
 # Tenemos datos de muchos años:
 table(gapminder$year)
 
@@ -418,6 +418,49 @@ gapminder_07 <- filter(gapminder, year == 2007)
 table(gapminder_07$year)
 ```
 ]
+
+---
+## Operadores aritméticos 
+
+```{r ejsdsd11, echo = FALSE}
+tabla2 <- data.frame(Operador=c("+", "-", "*", "%", "^"),
+                     Descripcion=c("Suma", "Resta", "Multiplicación", "División", "Potencia"),
+                     Ejemplo=c("2+2", "2-2", "2*2", "2%2", "2^3"),
+                     Resultado=c("4", "0", "4", "1", "8"))
+tabla2 %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), font_size = 20)
+
+```
+
+---
+
+## Operadores relacionales 
+
+```{r ej11bsdsd, echo = FALSE}
+tabla3 <- data.frame(Operador=c("<", ">", "<=", ">=", "%in%", "==", "!="),
+                     Descripcion=c("Menor a", "Mayor a", "Menor o igual a", "Mayor o igual a",
+                                   "Está incluido dentro de","Igual a", "Distinto a"),
+                     Ejemplo=c("4 < 4", "6 > 2", "4 <= 4", "6 >= 2", "2 %in% c(0, 1, 2)","hola == hello", "hola != hello"),
+                     Resultado=c("FALSE", "TRUE", "TRUE", "TRUE", "TRUE", "FALSE", "TRUE"))
+tabla3 %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), font_size = 20)
+
+```
+
+---
+
+## Operadores booleanos
+
+```{r ej11cssds, echo = FALSE}
+tabla4 <- data.frame(Operador=c("a & b ", "a | b", "!a", "isTrue(a)"),
+                     Prueba=c("a y b son verdaderos", "al menos una de a o b son verdaderas", "a no es verdadera", "a es verdadera"))
+tabla4 %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), font_size = 20)
+
+```
 
 ---
 ## Filtrar
