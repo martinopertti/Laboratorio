@@ -19,7 +19,10 @@
 	- [Funciones-y-código](/documentos-markdown/Funciones-y-código.html)
 
 ### Módulo 3 - Análisis de datos
+- [Presentación](/clase_3.html)
+- [Código de clase](/scripts/clase3_codigo.R)
+
 
 ### Base de datos LAPOP para el trabajo final
 - [Libro de códigos](/documentos-markdown/LAPOP-2019.html)
-- [Base de datos](/data_lapop/lapop_uruguay_2019.dta)
+- [Base de datos](/data_lapop/md_lapop_uruguay_2019.dta)

@@ -852,6 +852,7 @@ d_gap %>%
 ]
 
 
+
 ---
 class: inverse, center, middle
 
@@ -963,19 +964,24 @@ writexl::write_xlsx(resumen_2, "resultados/mi_primera_tabla.xlsx")
 ## Ejercicio
 
 .content-box-blue[
-*(1) En el mismo script que el ejercicio anterior, utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de expectativa de vida*
+*Para este ejercicio vamos a utilizar el dataframe de gapminder y vamos a crear una variable nueva recodificando los valores la variable de pbi per capita (gdpPercap). Para eso peguen el código debajo*
 
-*(2) Ahora crear una tabla cruzada entre country y la variable recodificada de expectativa de vida (solo con el número de casos, no %)*
+```{r ch9sdas11321, echo = TRUE}
+library(gapminder)
+gapminder <- gapminder %>% 
+  mutate(gdp_rec = case_when(
+    gdpPercap < 2000 ~ "Bajo",
+    gdpPercap >= 2000 & gdpPercap <= 5000 ~ "Medio",
+    gdpPercap > 5000 ~ "Alto"
+  ))
+```
 
-*(3) Hay algún país con observaciones en las tres categorías de nuestra variable?*
+*(1) Utilizar count() para crear una tabla con el % de casos en cada categoría de la recodificación de pbi per cápita*
 
-*(4) Recrear la tabla debajo (tabla cruzada de continente y expectativa de vida recodificada, con % por fila):*
+*(2) Ahora crear una tabla cruzada entre continente y la variable recodificada de pbi per cápita (incluir el % a nivel de fila)*
 
-*(5) Por último crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
+*(3) Crear una tabla resumen con la media de la expectativa de vida y la cantidad de casos según continente *
 
 ]
-
-
-
 
 

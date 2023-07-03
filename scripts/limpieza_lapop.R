@@ -39,9 +39,59 @@ df <- df %>%
   select(idnum, fecha, q1, q2, ed_rec, q3cn, ocup4a,
          vb2, vb3n, id_par, pol1, uruvbnc1, l1,
          a4, soct2, idio2, prot3, redist3, ing4,
+         b1, b12, b21, b13, b37, d6
          )
 
 glimpse(df)
+
+haven::write_dta(df, "data_lapop/md_lapop_uruguay_2019.dta")
+
+
+
+df <- df %>% 
+  mutate(l1_rec = case_when(
+    l1 == "No responde" ~ NA_real_,
+    l1 == "No sabe" ~ NA_real_,
+    TRUE ~ as.numeric(l1))) %>% 
+  mutate(b12 = case_when(
+    b12 == "No responde" ~ NA_real_,
+    b12 == "No sabe" ~ NA_real_,
+    TRUE ~ as.numeric(b12))) %>% 
+  mutate(b21 = case_when(
+    b21 == "No responde" ~ NA_real_,
+    b21 == "No sabe" ~ NA_real_,
+    TRUE ~ as.numeric(b21))) %>% 
+  mutate(b37 = case_when(
+    b37 == "No responde" ~ NA_real_,
+    b37 == "No sabe" ~ NA_real_,
+    TRUE ~ as.numeric(b37))) %>% 
+  mutate(b13 = case_when(
+    b13 == "No responde" ~ NA_real_,
+    b13 == "No sabe" ~ NA_real_,
+    TRUE ~ as.numeric(b13))) 
+
+# Confianza en las fuerzas armadas
+reg <- lm(b12 ~ l1_rec, data = df)
+summary(reg)
+
+# Confianza en los políticos
+reg <- lm(b21 ~ l1_rec, data = df)
+summary(reg)
+
+# Confianza en los medios de comunicación
+reg <- lm(b37 ~ l1_rec, data = df)
+summary(reg)
+
+
+reg <- lm(b12 ~ l1_rec + q1 + as.numeric(q2) + ed_rec + pol1, data = df)
+summary(reg)
+
+reg <- lm(b21 ~ l1_rec + q1 + as.numeric(q2) + ed_rec + pol1, data = df)
+summary(reg)
+
+reg <- lm(b37 ~ l1_rec + q1 + as.numeric(q2) + ed_rec + pol1, data = df)
+summary(reg)
+
 
 
 # Regresión lineal
