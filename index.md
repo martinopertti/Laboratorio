@@ -5,3 +5,4 @@
 - [encuestas](/analisis-encuestas.html)
 
 ![](ima/OpinionPulse.jpeg)
+![](ima/SurveyNexus.jpeg)
