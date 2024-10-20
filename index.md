@@ -6,5 +6,5 @@
 
 ![](ima/OpinionPulse.jpeg)
 ![](ima/SurveyNexus.jpeg)
-![](ima/LAnalaytics.jpg)
+![](ima/LAnalytics.jpeg)
 ![](ima/chief_economist.jpg)
