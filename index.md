@@ -7,5 +7,5 @@
 ![](ima/chief.jpg)
 ![](ima/data_ghost.jpeg)
 ![](ima/light_analytics.jpeg)
-![](ima/opinion_pulse.jepg)
-![](ima/snexus.jepg)
+![](ima/opinion_pulse.jpeg)
+![](ima/snexus.jpeg)
