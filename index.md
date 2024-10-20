@@ -4,7 +4,8 @@
 - [Camaras de eco](/echo-chambers.html)
 - [encuestas](/analisis-encuestas.html)
 
-![](ima/OpinionPulse.jpeg)
-![](ima/SurveyNexus.jpeg)
-![](ima/LAnalytics.jpeg)
-![](ima/chief_economist.jpg)
+![](ima/chief.jpg)
+![](ima/data_ghost.jpeg)
+![](ima/light_analytics.jpeg)
+![](ima/opinion_pulse.jepg)
+![](ima/snexus.jepg)
