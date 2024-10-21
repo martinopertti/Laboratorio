@@ -9,3 +9,4 @@
 ![](ima/light_analytics.jpeg)
 ![](ima/opinion_pulse.jpeg)
 ![](ima/snexus.jpeg)
+![](ima/insight_metrics.png)
