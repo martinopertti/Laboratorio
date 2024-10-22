@@ -3,6 +3,7 @@
 
 - [Camaras de eco](/echo-chambers.html)
 - [encuestas](/analisis-encuestas.html)
+- [presentation](/lab---3.html)
 
 ![](ima/chief.jpg)
 ![](ima/data_ghost.jpeg)
