@@ -16,3 +16,4 @@
 ![](ima/veritas.jpeg)
 ![](ima/valen.png)
 ![](ima/econ_prof.jpg)
+![](ima/bot.jpeg)
