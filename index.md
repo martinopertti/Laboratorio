@@ -11,3 +11,8 @@
 ![](ima/opinion_pulse.jpeg)
 ![](ima/snexus.jpeg)
 ![](ima/insight_metrics.png)
+![](ima/bot.png)
+![](ima/fernsby.png)
+![](ima/veritas.png)
+![](ima/valen.png)
+![](ima/econ_prof.png)
