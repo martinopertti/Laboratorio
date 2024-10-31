@@ -5,7 +5,7 @@
 - [encuestas](/analisis-encuestas.html)
 - [presentation](/lab---3.html)
 
-![](ima/chief.jpg)
+![](ima/chief.png)
 ![](ima/data_ghost.jpeg)
 ![](ima/light_analytics.jpeg)
 ![](ima/opinion_pulse.jpeg)
@@ -15,5 +15,5 @@
 ![](ima/fernsby.jpeg)
 ![](ima/veritas.jpeg)
 ![](ima/valen.jpeg)
-![](ima/econ_prof.jpg)
+![](ima/chief.jpg)
 ![](ima/bot.jpeg)
