@@ -5,7 +5,7 @@
 - [encuestas](/analisis-encuestas.html)
 - [presentation](/lab---3.html)
 
-![](ima/chief.png)
+![](ima/chief.jpg)
 ![](ima/data_ghost.jpeg)
 ![](ima/light_analytics.jpeg)
 ![](ima/opinion_pulse.jpeg)
