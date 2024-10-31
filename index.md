@@ -15,5 +15,5 @@
 ![](ima/fernsby.jpeg)
 ![](ima/veritas.jpeg)
 ![](ima/valen.jpeg)
-![](ima/chief.jpg)
+![](ima/econ_prof.jpg)
 ![](ima/bot.jpeg)
