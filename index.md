@@ -1,10 +1,12 @@
 
 ## Presentaciones
 
+- [presentation duke unc behavior](/presentation_dukeunc.html)
 - [Camaras de eco](/echo-chambers.html)
 - [encuestas](/analisis-encuestas.html)
 - [presentation](/lab---3.html)
 
+## Imagenes
 ![](ima/chief.png)
 ![](ima/data_ghost.jpeg)
 ![](ima/light_analytics.jpeg)
