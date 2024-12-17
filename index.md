@@ -7,7 +7,7 @@
 - [presentation](/lab---3.html)
 
 ## Imagenes
-![](ima/summit_polling.jpeg)
+![](ima/summit_polling.jpg)
 ![](ima/chief.png)
 ![](ima/data_ghost.jpeg)
 ![](ima/light_analytics.jpeg)
