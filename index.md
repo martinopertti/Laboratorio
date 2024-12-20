@@ -1,10 +1,4 @@
 
-## Presentaciones
-
-- [presentation duke unc behavior](/presentation_dukeunc.html)
-- [Camaras de eco](/echo-chambers.html)
-- [encuestas](/analisis-encuestas.html)
-- [presentation](/lab---3.html)
 
 ## Imagenes
 ![](ima/summit_polling.jpg)
