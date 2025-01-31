@@ -1,2 +1,2 @@
 
-![wvl](wvl-lab.html)
+[wvl](/wvl-lab.html)
